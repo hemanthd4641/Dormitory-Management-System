@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hostel Assistant Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to right, #8e9eab, #eef2f3);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .chat-container {
+        width: 100%;
+        max-width: 500px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .chat-header {
+        background-color: #4b6cb7;
+        color: white;
+        padding: 15px;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      .chat-box {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 15px;
+        background: #f9f9f9;
+      }
+
+      .message {
+        margin-bottom: 12px;
+        line-height: 1.4;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .user-msg {
+        align-items: flex-end;
+      }
+
+      .bot-msg {
+        align-items: flex-start;
+      }
+
+      .bubble {
+        max-width: 80%;
+        padding: 10px 14px;
+        border-radius: 20px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        word-wrap: break-word;
+      }
+
+      .user-msg .bubble {
+        background: #4b6cb7;
+        color: white;
+        border-bottom-right-radius: 0;
+      }
+
+      .bot-msg .bubble {
+        background: #e2e2e2;
+        color: #333;
+        border-bottom-left-radius: 0;
+      }
+
+      .chat-input {
+        display: flex;
+        border-top: 1px solid #ccc;
+        background: #fff;
+      }
+
+      #user-msg {
+        flex: 1;
+        padding: 15px;
+        font-size: 16px;
+        border: none;
+        outline: none;
+      }
+
+      button {
+        background: #4b6cb7;
+        color: white;
+        border: none;
+        padding: 0 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      button:hover {
+        background: #3a529b;
+      }
+
+      @media (max-width: 600px) {
+        .chat-container {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">AI ASSISTANT</div>
+      <div id="chat-box" class="chat-box"></div>
+      <form id="chat-form" class="chat-input">
+        <input
+          type="text"
+          id="user-msg"
+          placeholder="Ask something about hostel..."
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("chat-form");
+      const chatBox = document.getElementById("chat-box");
+
+      function addMessage(text, isUser) {
+        const wrapper = document.createElement("div");
+        wrapper.className = `message ${isUser ? "user-msg" : "bot-msg"}`;
+
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.textContent = text;
+
+        wrapper.appendChild(bubble);
+        chatBox.appendChild(wrapper);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      form.onsubmit = async function (e) {
+        e.preventDefault();
+        const input = document.getElementById("user-msg");
+        const message = input.value.trim();
+        if (!message) return;
+
+        addMessage(message, true);
+        input.value = "";
+
+        try {
+          const response = await fetch("/chatbot/ask/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: message }),
+          });
+          const data = await response.json();
+          addMessage(data.reply, false);
+        } catch (err) {
+          addMessage("❌ Error contacting the bot.", false);
+        }
+      };
+    </script>
+  </body>
+</html>

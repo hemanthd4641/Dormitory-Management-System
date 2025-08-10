@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+{% block title %}User Profile{% endblock title %}
+{%load static%}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">User Profiles</h2>
+  <form method="GET" class="mb-4">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search users..." 
+           class="form-control" aria-label="Search">
+  </form>
+  <ul class="list-group">
+    {% for user in users %}
+      <li class="list-group-item d-flex align-items-center">
+        <img src="{{ user.profile.image.url }}" 
+             class="rounded-circle me-3" 
+             width="50" height="50">
+        <span class="fs-5">{{ user.username }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock content %}

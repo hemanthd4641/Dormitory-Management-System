@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block title %}Report{% endblock title %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h1 class="text-center mb-4">
+                {% if request.user.is_superuser %}
+                    Manage Reports
+                {% else %}
+                    Submit & View Your Reports
+                {% endif %}
+            </h1>
+
+            {% if not request.user.is_superuser %}
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-file-earmark-plus"></i> Submit New Report</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="report_title" class="form-label">Report Title</label>
+                                <input type="text" name="report_title" id="report_title" class="form-control" 
+                                       placeholder="Enter a brief title for your report..." required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="report" class="form-label">Report Description</label>
+                                <textarea name="report" id="report" class="form-control" rows="4" 
+                                          placeholder="Describe your issue or concern in detail..." required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select name="category" id="category" class="form-select" required>
+                                    <option value="">Select Category</option>
+                                    <option value="academic">Academic Issue</option>
+                                    <option value="facility">Facility Issue</option>
+                                    <option value="food">Food & Dining</option>
+                                    <option value="accommodation">Accommodation</option>
+                                    <option value="health">Health & Safety</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="priority" class="form-label">Priority Level</label>
+                                <select name="priority" id="priority" class="form-select" required>
+                                    <option value="">Select Priority</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-send"></i> Submit Report
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-ul"></i> 
+                        {% if request.user.is_superuser %}
+                            All Reports
+                        {% else %}
+                            Your Reports
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if reports %}
+                        {% for Report in reports %}
+                            <div class="card mb-3 border-start border-4 
+                                {% if Report.priority == 'urgent' %}border-danger
+                                {% elif Report.priority == 'high' %}border-warning
+                                {% elif Report.priority == 'medium' %}border-info
+                                {% else %}border-success{% endif %}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title mb-1">
+                                            {% if Report.report_title %}
+                                                {{ Report.report_title }}
+                                            {% else %}
+                                                Report #{{ Report.id }}
+                                            {% endif %}
+                                        </h6>
+                                        <div class="d-flex gap-2">
+                    
+                                            <span class="badge 
+                                                {% if Report.priority == 'urgent' %}bg-danger
+                                                {% elif Report.priority == 'high' %}bg-warning text-dark
+                                                {% elif Report.priority == 'medium' %}bg-info
+                                                {% else %}bg-success{% endif %}">
+                                                {{ Report.priority|default:"Low"|capfirst }}
+                                            </span>
+                                        
+                                            {% if Report.category %}
+                                                <span class="badge bg-secondary">{{ Report.category|capfirst }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <p class="card-text text-muted mb-2">{{ Report.report }}</p>
+                                    
+                                    <!-- Show student info for superusers -->
+                                    {% if request.user.is_superuser and Report.user %}
+                                        <small class="text-muted">
+                                            <i class="bi bi-person"></i> Reported by: {{ Report.user.username }}
+                                            | <i class="bi bi-calendar"></i> {{ Report.created|date:"M d, Y H:i" }}
+                                        </small>
+                                    {% endif %}
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div>
+                                            {% if not request.user.is_superuser %}
+                                                {% if Report.recived %}
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle-fill"></i> Received & Under Review
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="bi bi-clock"></i> Pending Review
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div>
+                                            {% if request.user.is_superuser %}
+                                                {% if not Report.recived %}
+                                                    <a href="{% url 'chatroom:recived' Report.id %}" class="btn btn-outline-success btn-sm">
+                                                        <i class="bi bi-check-circle"></i> Mark as Received
+                                                    </a>
+                                                {% else %}
+                                                    <span class="text-success">
+                                                        <i class="bi bi-check-circle-fill"></i> Received
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle"></i>
+                            {% if request.user.is_superuser %}
+                                <h6>No reports have been submitted yet</h6>
+                                <p class="mb-0">Reports submitted by students will appear here.</p>
+                            {% else %}
+                                <h6>You haven't submitted any reports yet</h6>
+                                <p class="mb-0">Use the form above to submit your first report.</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+{% endblock content %}

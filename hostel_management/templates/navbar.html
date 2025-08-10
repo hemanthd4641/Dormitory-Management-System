@@ -1,0 +1,86 @@
+{% load static %}
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container-fluid">
+    
+    <a
+      class="navbar-brand d-flex align-items-center fw-bold text-primary"
+      href="{% url 'admission:index' %}"
+    >
+      BCM Hostel
+    </a>
+
+   
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+  
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        {% if request.user.is_authenticated %}
+          <ul class="nav d-flex flex-row flex-wrap gap-2">
+            {% if request.user.is_superuser %}
+              <li class="nav-item">
+                <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'admission:viewstudents' %}">View Students</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'hostel:index' %}">Room Management</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'admission:announcement' %}">Announcement</a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'admission:registration' %}">
+                  <button type="button" class="btn btn-warning text-dark fw-semibold px-4 shadow" style="border-radius: 30px; letter-spacing: 1.2px;">
+                    + New Admission
+                  </button>
+                </a>
+              </li>
+            {% endif %}
+
+
+             <li class="nav-item">
+                <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'chatroom:report' %}">Complaints</a>
+              </li>
+            <li class="nav-item">
+              <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'timetable:Foodtimetable' %}">Timetable</a>
+            </li>
+          </ul>
+        {% else %}
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'chatroom:index' %}">Chat Room</a>
+          </li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'userprofile:index' %}">Profile</a>
+        </li>
+
+        {% if request.user.is_authenticated %}
+          <li class="nav-item ms-2">
+            <a href="{% url 'admission:logout' %}">
+              <button class="btn btn-danger">Logout</button>
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item ms-2">
+            <a href="{% url 'admission:login' %}">
+              <button class="btn btn-primary">Login</button>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock navbar %}

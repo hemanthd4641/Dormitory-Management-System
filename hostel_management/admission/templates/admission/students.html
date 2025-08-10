@@ -1,0 +1,33 @@
+{%extends 'base.html'%}
+{%block title%}All students{%endblock title%}
+{%block content%}
+    {%if students%}
+    {%for student in students%}
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Student Details</h5>
+                <hr>
+                <p><strong>Room Number:</strong> {{ student.room }}</p>
+                <p><strong>First Name:</strong> {{ student.first_name }}</p>
+                <p><strong>Last Name:</strong> {{ student.last_name }}</p>
+                <p><strong>Username:</strong> {{ student.username }}</p>
+                <p><strong>Date of Birth:</strong> {{ student.dob }}</p>
+                <p><strong>Gender:</strong> {{ student.gender }}</p>
+                <p><strong>Email:</strong> {{ student.email }}</p>
+                <p><strong>Phone Number:</strong> {{ student.phone_number }}</p>
+                <p><strong>Address:</strong> {{ student.address }}</p>
+                <p><strong>Admission Date:</strong> {{ student.admission_date }}</p>
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{% url 'admission:deletestudent' student.user.id %}" class="btn btn-danger">Delete</a>
+                    <a href="{% url 'admission:updatedetails' student.user.id %}" class="btn btn-primary">Update</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+    {%else%}
+    <h1>No students admitted yet</h1>
+    <a href="{%url 'admission:registration'%}"><button class="badge bg-success">Add student</button></a>
+    {%endif%}
+{%endblock content%}

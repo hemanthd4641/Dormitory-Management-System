@@ -1,0 +1,138 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Dashboard 
+{% endblock title %} {% block content %}
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+  rel="stylesheet"
+/>
+<style>
+  .hover-shadow:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+  }
+</style>
+
+<div class="container mt-4" data-aos="fade-up" data-aos-duration="800">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold text-primary">BCM BOYS HOSTEL</h2>
+    <p class="text-muted">Bengaluru</p>
+  </div>
+
+  <div class="row mb-5" data-aos="fade-right" data-aos-delay="200">
+    <div class="col-md-8 mx-auto">
+      <h5 class="mb-3 text-decoration-underline">Upcoming Announcements</h5>
+      <ul class="list-group shadow-sm">
+        {% for announcement in announcements %}
+        <a
+          href="{% url 'admission:announcement' %}"
+          class="text-decoration-none"
+        >
+          <li
+            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          >
+            <div class="text-dark fw-semibold">{{ announcement.about }}</div>
+            <small class="text-muted"
+              >{{ announcement.created|timesince }} ago</small
+            >
+          </li>
+        </a>
+        {% empty %}
+        <li class="list-group-item text-muted">No upcoming announcements.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  {% if request.user.is_superuser %}
+  <div class="row mb-5" data-aos="fade-up" data-aos-delay="300">
+    <div class="col-md-12">
+      <h5 class="mb-4 text-decoration-underline">Statistics Overview</h5>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <a
+            href="{% url 'admission:viewstudents' %}"
+            class="text-decoration-none"
+          >
+            <div
+              class="card shadow h-100 border-0 hover-shadow"
+              data-aos="zoom-in"
+            >
+              <div class="card-header bg-primary text-white text-center fs-5">
+                Total Students
+              </div>
+              <div class="card-body text-center">
+                <h2 class="card-title">{{ studentcount }}</h2>
+                <p class="card-text text-muted">Registered Students</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6">
+          <a href="{% url 'hostel:index' %}" class="text-decoration-none">
+            <div
+              class="card shadow h-100 border-0 hover-shadow"
+              data-aos="zoom-in"
+              data-aos-delay="100"
+            >
+              <div class="card-header bg-success text-white text-center fs-5">
+                Total Rooms
+              </div>
+              <div class="card-body text-center">
+                <h2 class="card-title">{{ roomcount }}</h2>
+                <p class="card-text text-muted">Available Rooms</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="row mt-4" data-aos="fade-up" data-aos-delay="300">
+    <div class="col-md-8 mx-auto">
+      {% if request.user.is_authenticated and request.user.student.room %}
+      <div class="alert alert-info shadow-sm" role="alert">
+        You are assigned to Room Number:
+        <strong>{{ request.user.student.room.room_number }}</strong>
+      </div>
+      {% else %}
+      <div class="alert alert-warning shadow-sm" role="alert">
+        You are not assigned to a room yet.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+<div class="row my-5" data-aos="fade-up" data-aos-delay="200">
+  <div class="col-md-8 mx-auto text-center">
+    <h4 class="fw-bold text-primary mb-3">
+      Need Help? Chat with Our Hostel Assistant 🤖
+    </h4>
+    <p class="text-muted mb-4">
+      Get instant answers about room info, mess timings, facilities, and more!
+    </p>
+    <a
+      href="{% url 'chatbot_home' %}"
+      class="btn btn-outline-primary btn-lg shadow-sm px-4 py-2"
+    >
+      Talk to Chatbot
+    </a>
+  </div>
+</div>
+<footer class="bg-light text-center py-3 mt-5 shadow-sm border-top">
+  <p class="mb-0 text-muted">
+    &copy; {{ year|default:"2025" }} BCM Boys Hostel, Bengaluru
+  </p>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+{% endblock content %}
+

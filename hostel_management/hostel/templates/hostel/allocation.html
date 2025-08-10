@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Timetable{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Allocation</h1>
+
+    <div class="table-responsive">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>Total Allocations: {{ allocationscount }}</h4>
+            {%if allocationscount == 8%}            
+                <button class="btn btn-danger">Room is full</button>
+            {%else%}
+            <a href="{% url 'hostel:add' %}?q={{ room_number }}">
+            <button class="btn btn-success">Add Allocation</button>
+            </a>
+            {%endif%}
+        </div>
+
+        <table class="table table-sm table-bordered table-hover text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Room Number</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for allocation in allocations %}
+                    <tr>
+                        <td>{{ allocation.room }}</td>
+                        <th scope="row">{{ allocation.user }}</th>
+                        <td>
+                            <a href="{% url 'hostel:delete' allocation.id %}" class="btn btn-danger btn-sm me-2">
+                                Delete
+                            </a>
+                            <a href="{% url 'hostel:update' allocation.id %}" class="btn btn-warning btn-sm">
+                                Update
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center">No allocations available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

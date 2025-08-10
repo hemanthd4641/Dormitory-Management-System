@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Update Timetable{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Update Timetable for {{ timetable.day }}</h1>
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="day" class="form-label">Day</label>
+            <input type="text" class="form-control" id="day" name="day" value="{{ timetable.day }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="break_fast" class="form-label">Breakfast</label>
+            {{ form.break_fast }}
+            {{ form.break_fast.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="lunch" class="form-label">Lunch</label>
+            {{ form.lunch }}
+            {{ form.lunch.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="snacks" class="form-label">Snacks</label>
+            {{ form.snacks }}
+            {{ form.snacks.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="dinner" class="form-label">Dinner</label>
+            {{ form.dinner }}
+            {{ form.dinner.errors }}
+        </div>
+        <div class="text-center">
+            {% if user.is_superuser %}
+                <button type="submit" class="btn btn-primary">Update Timetable</button>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock content %}

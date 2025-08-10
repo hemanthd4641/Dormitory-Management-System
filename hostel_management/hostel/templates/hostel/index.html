@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Rooms{% endblock title %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-center">Room Information</h1>
+            <a href="{% url 'hostel:addroom' %}" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Add a new room">
+                <i class="bi bi-plus-circle me-2"></i> Add Room
+            </a>
+        </div>
+        
+        <h4 class="text-center mb-4">Total Rooms: <strong>{{ roomcount }}</strong></h4>
+        <div class="row">
+            {% for room in rooms %}
+                <div class="col-md-4 mb-4">
+                    <div class="card border shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Room Number: <strong>{{ room.room_number }}</strong></h5>
+                            <p class="card-text">Capacity: <strong>{{ room.capacity }}</strong></p>
+                            <p class="card-text">
+                                Status: 
+                                {% if room.occupied %}
+                                    <span class="badge bg-danger">Full</span>
+                                {% else %}
+                                    <span class="badge bg-success">Vacant</span>
+                                {% endif %}
+                            </p>
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="{% url 'hostel:allocations' room.room_number %}" class="btn btn-primary">View Allocations</a>
+                                <a href="{% url 'hostel:deleteroom' room.room_number %}" class="btn btn-danger">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
