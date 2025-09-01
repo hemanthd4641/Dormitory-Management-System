@@ -2,10 +2,11 @@
 {% block title %}Timetable{% endblock title %}
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Food Timetable</h1>
-    <div class="table-responsive">
-        <table class="table table-sm table-bordered text-center">
-            <thead>
+    <h1 class="text-center mb-4 fw-bold display-5 timetable-heading">🍴 Food Timetable</h1>
+
+    <div class="table-responsive shadow-lg rounded-4 overflow-hidden timetable-card">
+        <table class="table align-middle text-center mb-0">
+            <thead class="timetable-header text-white">
                 <tr>
                     <th scope="col">Day</th>
                     <th scope="col">Breakfast</th>
@@ -20,25 +21,83 @@
             <tbody>
                 {% for day in timetable %}
                     <tr>
-                        <th scope="row">{{ day.day }}</th>
+                        <th scope="row" class="fw-semibold text-primary">{{ day.day }}</th>
                         <td>{{ day.break_fast }}</td>
                         <td>{{ day.lunch }}</td>
                         <td>{{ day.snacks }}</td>
                         <td>{{ day.dinner }}</td>
-                         {% if user.is_superuser %}
-                         <td><a href="{%url 'timetable:update' day.id%}" class="btn btn-warning btn-sm">update</a></td>
+                        {% if user.is_superuser %}
+                        <td>
+                            <a href="{% url 'timetable:update' day.id %}" class="btn btn-sm btn-update">Update</a>
+                        </td>
                         {% endif %}
-                        
                     </tr>
-
-                
                 {% empty %}
                     <tr>
-                        <td colspan="5" class="text-center">No timetable available.</td>
+                        <td colspan="6" class="text-center text-muted py-4">No timetable available.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<style>
+    /* Gradient heading */
+    .timetable-heading {
+        background: linear-gradient(90deg, #007bff, #6610f2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1.5px;
+    }
+
+    /* Card container */
+    .timetable-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #dee2e6;
+    }
+
+    /* Header */
+    .timetable-header {
+        background: linear-gradient(90deg, #007bff, #6610f2);
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Table cells */
+    .table th, .table td {
+        padding: 16px;
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+    }
+
+    /* Row hover effect */
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+    .table tbody tr:hover {
+        background: #f8f9fa;
+        transform: scale(1.01);
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.08);
+    }
+
+    /* Update button */
+    .btn-update {
+        background: #ffc107;
+        border: none;
+        color: #212529;
+        font-weight: 600;
+        padding: 6px 18px;
+        border-radius: 30px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+    }
+    .btn-update:hover {
+        background: #e0a800;
+        transform: scale(1.08);
+        box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+    }
+</style>
 {% endblock content %}

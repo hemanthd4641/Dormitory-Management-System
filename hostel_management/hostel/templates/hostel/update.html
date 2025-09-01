@@ -1,9 +1,69 @@
 {% extends 'base.html' %}
-{% block title %}Update allocation{% endblock title %}
+{% block title %}Update Allocation{% endblock title %}
 {% block content %}
-<form method = 'POST'>
-    {%csrf_token%}
-    {{form.as_p}}
-    <input type="submit">
-</form>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        
+        <!-- Header -->
+        <div class="card-header text-white text-center py-4" 
+             style="background: linear-gradient(135deg, #007bff, #00bcd4);">
+            <h3 class="mb-0 fw-bold">
+                <i class="bi bi-pencil-square me-2"></i> Update Allocation
+            </h3>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4 bg-light">
+            <form method="POST" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3 form-area">
+                    {{ form.as_p }}
+                </div>
+                <div class="text-center mt-4">
+                    <input type="submit" value="Update" 
+                           class="btn btn-success px-5 py-2 rounded-pill shadow-sm fw-semibold">
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-muted text-center small bg-white py-2">
+            Please review the details before updating.
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styling -->
+<style>
+    .card {
+        background: #ffffff;
+    }
+    form p {
+        margin-bottom: 1.2rem;
+    }
+    label {
+        font-weight: 600;
+        color: #333;
+    }
+    input, select, textarea {
+        border-radius: 0.5rem !important;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        border: 1px solid #ddd;
+        transition: all 0.3s ease-in-out;
+    }
+    input:focus, select:focus, textarea:focus {
+        border-color: #007bff !important;
+        box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    }
+    input[type="submit"] {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease-in-out;
+    }
+    input[type="submit"]:hover {
+        background-color: #218838 !important;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+</style>
 {% endblock content %}

@@ -1,23 +1,74 @@
-
 {% extends "base.html" %}
 {% block title %}User Profile{% endblock title %}
-{%load static%}
+{% load static %}
 {% block content %}
 <div class="container mt-5">
-  <h2 class="text-center mb-4">User Profiles</h2>
-  <form method="GET" class="mb-4">
-    <input type="text" name="q" value="{{ query }}" placeholder="Search users..." 
-           class="form-control" aria-label="Search">
-  </form>
-  <ul class="list-group">
-    {% for user in users %}
-      <li class="list-group-item d-flex align-items-center">
-        <img src="{{ user.profile.image.url }}" 
-             class="rounded-circle me-3" 
-             width="50" height="50">
-        <span class="fs-5">{{ user.username }}</span>
-      </li>
-    {% endfor %}
-  </ul>
+    <h2 class="text-center mb-4 fw-bold profile-heading">User Profiles</h2>
+
+    <!-- Search Bar -->
+    <form method="GET" class="mb-4">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search users..."
+               class="form-control search-box" aria-label="Search">
+    </form>
+
+    <!-- User List -->
+    <ul class="list-group shadow-sm rounded-4 overflow-hidden">
+        {% for user in users %}
+            <li class="list-group-item d-flex align-items-center py-3 user-item">
+                <img src="{{ user.profile.image.url }}"
+                     class="rounded-circle me-3 profile-img"
+                     width="55" height="55" alt="Profile">
+                <span class="fs-5 fw-semibold">{{ user.username }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center text-muted py-3">
+                No users found.
+            </li>
+        {% endfor %}
+    </ul>
 </div>
+
+<style>
+    /* Heading style */
+    .profile-heading {
+        background: linear-gradient(90deg, #007bff, #6610f2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 0.5px;
+    }
+
+    /* Search box */
+    .search-box {
+        border-radius: 12px;
+        padding: 10px 14px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .search-box:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0,123,255,0.25);
+    }
+
+    /* User list styling */
+    .list-group {
+        border: none;
+    }
+    .user-item {
+        transition: all 0.2s ease;
+        border: none;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    .user-item:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.01);
+    }
+
+    /* Profile image */
+    .profile-img {
+        object-fit: cover;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        border: 2px solid #fff;
+    }
+</style>
 {% endblock content %}

@@ -1,9 +1,48 @@
-{%extends 'base.html'%}
-{%block title%}updating...{%endblock title%}
-{%block content%}
-    <form method = 'POST'>
-        {%csrf_token%}
-        {{form.as_p}}
-        <input type='submit' value='update'>
-    </form>
-{%endblock content%}
+{% extends 'base.html' %}
+{% block title %}Updating...{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-body">
+            <h3 class="card-title text-center text-primary fw-bold mb-4">Update Details</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    {{ form.as_p }}
+                </div>
+                <div class="d-grid">
+                    <input type="submit" value="Update" class="btn btn-primary btn-lg">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        max-width: 600px;
+        margin: auto;
+    }
+    form p {
+        margin-bottom: 1rem;
+    }
+    form label {
+        font-weight: 500;
+        color: #444;
+    }
+    form input, form select, form textarea {
+        border-radius: 8px !important;
+        padding: 10px !important;
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+    input[type="submit"] {
+        border-radius: 8px;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+    input[type="submit"]:hover {
+        background: #0a58ca;
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock content %}

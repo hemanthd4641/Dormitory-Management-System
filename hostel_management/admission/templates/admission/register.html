@@ -1,10 +1,88 @@
 {% extends 'base.html' %}
 {% block title %}Registration{% endblock title %}
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center">Student Registration</h2>
-    <div class="card shadow">
+<style>
+    body {
+        background: linear-gradient(135deg, #f0f4f8, #e6ecf3);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2 {
+        font-weight: 600;
+        color: #0d6efd;
+        margin-bottom: 1.5rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 1rem;
+        background: #fff;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 0.3rem;
+        display: block;
+    }
+
+    .form-control {
+        border-radius: 0.6rem;
+        border: 1px solid #ced4da;
+        padding: 0.65rem 0.9rem;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-primary {
+        border-radius: 0.6rem;
+        padding: 0.65rem;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background-color: #084298;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(13, 110, 253, 0.25);
+    }
+
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow w-100" style="max-width: 550px;">
         <div class="card-body">
+            <h2 class="text-center">Student Registration</h2>
             <form method="post" novalidate>
                 {% csrf_token %}
                 
@@ -96,7 +174,7 @@
                     {% endfor %}
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">Register</button>
+                <button type="submit" class="btn btn-primary btn-block w-100">Register</button>
             </form>
         </div>
     </div>

@@ -4,15 +4,16 @@
 
 {% block content %}
 <style>
+    /* Chat Box Styling */
     .chat-box {
-        max-height: 300px; 
-        overflow-y: auto;   
+        max-height: 300px;  /* Limit height for scrolling */
+        overflow-y: auto;   /* Enable vertical scroll */
         background-color: #f8f9fa;
         border-radius: 8px;
     }
 
     .chat-bubble {
-        max-width: 70%;     
+        max-width: 70%;     /* Keep messages within reasonable size */
         word-wrap: break-word;
     }
 
@@ -20,6 +21,7 @@
         color: white;
     }
 
+    /* Different bubble styles for alignment */
     .justify-content-end .chat-bubble {
         border-bottom-right-radius: 0;
     }
@@ -27,6 +29,8 @@
     .justify-content-start .chat-bubble {
         border-bottom-left-radius: 0;
     }
+
+    /* Avatar Styling */
     .rounded-circle {
         width: 40px;
         height: 40px;
@@ -36,10 +40,10 @@
 
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">  
+        <div class="col-md-6">  <!-- Reduced width for a compact layout -->
             <h1 class="text-center mb-4">Welcome to the Chat Room</h1>
 
-            
+            <!-- Chat Box -->
             <div class="card">
                 <div class="card-body chat-box p-3" id="chatList">
                     {% for chat in chats %}
@@ -64,6 +68,7 @@
                 </div>
             </div>
 
+            <!-- Message Input Form -->
             <form method="POST" class="mt-3" onsubmit="postChatMessage(event)">
                 {% csrf_token %}
                 <div class="input-group">
@@ -76,13 +81,14 @@
     </div>
 </div>
 
+<!-- JavaScript for AJAX Chat Submission -->
 <script>
     function postChatMessage(event) {
-        event.preventDefault(); 
+        event.preventDefault();  // Prevent page reload
         const messageInput = document.getElementById('messageInput');
         const message = messageInput.value.trim();
 
-        if (!message) return; 
+        if (!message) return;  // Prevent empty messages
 
         fetch('', {
             method: 'POST',
@@ -95,8 +101,9 @@
         })
         .then(response => response.json())
         .then(data => {
-            messageInput.value = '';  
+            messageInput.value = '';  // Clear input field
 
+            // Create a new chat bubble dynamically
             const chatList = document.getElementById('chatList');
             const newChat = document.createElement('div');
             newChat.className = 'd-flex justify-content-end align-items-start mb-3';
@@ -108,7 +115,7 @@
                 </div>`;
             chatList.appendChild(newChat);
 
-            chatList.scrollTop = chatList.scrollHeight;  
+            chatList.scrollTop = chatList.scrollHeight;  // Auto-scroll to bottom
         })
         .catch(error => console.error('Error:', error));
     }

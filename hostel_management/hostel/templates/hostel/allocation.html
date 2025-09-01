@@ -3,49 +3,98 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Allocation</h1>
-
-    <div class="table-responsive">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Total Allocations: {{ allocationscount }}</h4>
-            {%if allocationscount == 8%}            
-                <button class="btn btn-danger">Room is full</button>
-            {%else%}
-            <a href="{% url 'hostel:add' %}?q={{ room_number }}">
-            <button class="btn btn-success">Add Allocation</button>
-            </a>
-            {%endif%}
+    <div class="card shadow-lg border-0 rounded-4">
+        <!-- Header -->
+        <div class="card-header text-center rounded-top-4 border-0"  
+             style="background: linear-gradient(135deg, #11998e); color: #fff;">
+            <h1 class="h4 mb-0 fw-bold">Allocation</h1>
         </div>
 
-        <table class="table table-sm table-bordered table-hover text-center align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">Room Number</th>
-                    <th scope="col">Student Name</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for allocation in allocations %}
-                    <tr>
-                        <td>{{ allocation.room }}</td>
-                        <th scope="row">{{ allocation.user }}</th>
-                        <td>
-                            <a href="{% url 'hostel:delete' allocation.id %}" class="btn btn-danger btn-sm me-2">
-                                Delete
-                            </a>
-                            <a href="{% url 'hostel:update' allocation.id %}" class="btn btn-warning btn-sm">
-                                Update
-                            </a>
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="3" class="text-center">No allocations available.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="card-body" style="background: #f7f9fc;">
+            <!-- Allocation count & add button -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h6 class="mb-0 fw-semibold text-dark">
+                    Total Allocations: 
+                    <span class="badge text-white" 
+                          style="background: linear-gradient(90deg, #00c6ff, #0072ff);">
+                        {{ allocationscount }}
+                    </span>
+                </h6>
+                {% if allocationscount == 8 %}
+                    <button class="btn btn-danger px-4 py-2 rounded-pill shadow-sm fw-semibold">
+                        Room is full
+                    </button>
+                {% else %}
+                    <a href="{% url 'hostel:add' %}?q={{ room_number }}">
+                        <button class="btn btn-success px-4 py-2 rounded-pill shadow-sm fw-semibold">
+                            + Add Allocation
+                        </button>
+                    </a>
+                {% endif %}
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle shadow-sm">
+                    <thead class="text-center" 
+                           style="background: linear-gradient(90deg, #e0eafc, #cfdef3); 
+                                  color: #2d3436; font-weight: 600;">
+                        <tr>
+                            <th scope="col">Room Number</th>
+                            <th scope="col">Student Name</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {% for allocation in allocations %}
+                            <tr>
+                                <td><span class="fw-semibold text-dark">{{ allocation.room }}</span></td>
+                                <td class="text-muted">{{ allocation.user }}</td>
+                                <td>
+                                    <a href="{% url 'hostel:delete' allocation.id %}"  
+                                       class="btn btn-outline-danger btn-sm me-2 rounded-pill px-3 fw-semibold">
+                                        Delete
+                                    </a>
+                                    <a href="{% url 'hostel:update' allocation.id %}"  
+                                       class="btn btn-outline-info btn-sm rounded-pill px-3 fw-semibold">
+                                        Update
+                                    </a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-muted text-center">
+                                    No allocations available.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .card {
+        border-radius: 18px;
+        overflow: hidden;
+    }
+    .table th, .table td {
+        vertical-align: middle;
+    }
+    .btn {
+        transition: all 0.3s ease-in-out;
+        font-weight: 500;
+    }
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+    }
+    .badge {
+        font-size: 0.85rem;
+        padding: 0.45em 0.75em;
+        border-radius: 12px;
+    }
+</style>
 {% endblock content %}

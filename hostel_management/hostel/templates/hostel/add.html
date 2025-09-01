@@ -3,18 +3,52 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h1 class="text-center mb-4">You can add here</h1>
+    <h1 class="text-center mb-5 fw-bold text-primary">➕ Add Allocation</h1>
 
-  <div class="row justify-content-center">
-    {% for user in users %}
-      <div class="col-md-4 mb-3">
-        <form method="POST" class="text-center border p-3 shadow-sm rounded">
-          {% csrf_token %}
-          <input type="hidden" name="user" value="{{ user.username }}">
-          <input type="submit" class="btn btn-primary w-100" value="{{ user.username }}">
-        </form>
-      </div>
-    {% endfor %}
-  </div>
+    <div class="row justify-content-center">
+        {% for user in users %}
+        <div class="col-md-4 mb-4">
+            <form method="POST" class="allocation-card text-center p-4 shadow-sm rounded-4">
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{ user.username }}">
+                <input type="submit" class="btn btn-primary w-100 fw-semibold py-2 rounded-pill" 
+                       value="{{ user.username }}">
+            </form>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
+<!-- Custom Styling -->
+<style>
+    h1 {
+        font-size: 2rem;
+        letter-spacing: 0.5px;
+    }
+
+    .allocation-card {
+        background: #f9fbfd;
+        border: 1px solid #e3e6f0;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .allocation-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+        background: #ffffff;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #007bff);
+        border: none;
+        transition: all 0.3s ease-in-out;
+        font-size: 1.05rem;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #0056b3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+</style>
 {% endblock content %}

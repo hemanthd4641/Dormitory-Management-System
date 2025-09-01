@@ -2,38 +2,98 @@
 {% block title %}Update Timetable{% endblock title %}
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Update Timetable for {{ timetable.day }}</h1>
-    <form method="POST" novalidate>
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="day" class="form-label">Day</label>
-            <input type="text" class="form-control" id="day" name="day" value="{{ timetable.day }}" readonly>
-        </div>
-        <div class="mb-3">
-            <label for="break_fast" class="form-label">Breakfast</label>
-            {{ form.break_fast }}
-            {{ form.break_fast.errors }}
-        </div>
-        <div class="mb-3">
-            <label for="lunch" class="form-label">Lunch</label>
-            {{ form.lunch }}
-            {{ form.lunch.errors }}
-        </div>
-        <div class="mb-3">
-            <label for="snacks" class="form-label">Snacks</label>
-            {{ form.snacks }}
-            {{ form.snacks.errors }}
-        </div>
-        <div class="mb-3">
-            <label for="dinner" class="form-label">Dinner</label>
-            {{ form.dinner }}
-            {{ form.dinner.errors }}
-        </div>
-        <div class="text-center">
-            {% if user.is_superuser %}
-                <button type="submit" class="btn btn-primary">Update Timetable</button>
-            {% endif %}
-        </div>
-    </form>
+    <div class="card shadow-lg border-0 rounded-4 p-4">
+        <h1 class="text-center mb-4 fw-bold update-heading">Update Timetable for {{ timetable.day }}</h1>
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="day" class="form-label fw-semibold">Day</label>
+                <input type="text" class="form-control" id="day" name="day" value="{{ timetable.day }}" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="break_fast" class="form-label fw-semibold">Breakfast</label>
+                {{ form.break_fast }}
+                <div class="text-danger small">{{ form.break_fast.errors }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="lunch" class="form-label fw-semibold">Lunch</label>
+                {{ form.lunch }}
+                <div class="text-danger small">{{ form.lunch.errors }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="snacks" class="form-label fw-semibold">Snacks</label>
+                {{ form.snacks }}
+                <div class="text-danger small">{{ form.snacks.errors }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="dinner" class="form-label fw-semibold">Dinner</label>
+                {{ form.dinner }}
+                <div class="text-danger small">{{ form.dinner.errors }}</div>
+            </div>
+
+            <div class="text-center">
+                {% if user.is_superuser %}
+                    <button type="submit" class="btn btn-update px-4 py-2">Update Timetable</button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
 </div>
+
+<style>
+    /* Heading gradient */
+    .update-heading {
+        background: linear-gradient(90deg, #007bff, #6610f2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+    }
+
+    /* Card container */
+    .card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 2rem;
+    }
+
+    /* Labels */
+    .form-label {
+        font-size: 1rem;
+        color: #495057;
+    }
+
+    /* Inputs */
+    .form-control, select, textarea {
+        border-radius: 12px;
+        border: 1px solid #ced4da;
+        padding: 10px 14px;
+        transition: all 0.3s ease;
+    }
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0,123,255,0.2);
+    }
+
+    /* Update button */
+    .btn-update {
+        background: linear-gradient(90deg, #007bff, #6610f2);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+    .btn-update:hover {
+        background: linear-gradient(90deg, #0056b3, #520dc2);
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    }
+</style>
 {% endblock content %}

@@ -6,27 +6,60 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white text-center">
-                    <h4>Add New Room</h4>
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                
+                <!-- Card Header -->
+                <div class="card-header text-white text-center py-4" 
+                     style="background: linear-gradient(135deg, #00c6ff);">
+                    <h4 class="mb-0 fw-bold">
+                        <i class="bi bi-door-open-fill me-2"></i> Add New Room
+                    </h4>
                 </div>
-                <div class="card-body">
+
+                <!-- Card Body -->
+                <div class="card-body p-4">
                     <form method="POST" class="needs-validation" novalidate>
                         {% csrf_token %}
+                        
+                        <!-- Room Number -->
                         <div class="mb-3">
-                            <label for="roomNumber" class="form-label">Room Number</label>
-                            <input type="number" name="room_number" id="roomNumber" class="form-control" placeholder="Enter room number" required>
+                            <label for="roomNumber" class="form-label fw-semibold">
+                                Room Number
+                            </label>
+                            <input type="number" 
+                                   name="room_number" 
+                                   id="roomNumber" 
+                                   class="form-control shadow-sm rounded-3" 
+                                   placeholder="Enter room number" 
+                                   required>
                         </div>
+
+                        <!-- Capacity -->
                         <div class="mb-3">
-                            <label for="capacity" class="form-label">Capacity</label>
-                            <input type="number" name="capacity" id="capacity" class="form-control" placeholder="Enter room capacity" required>
+                            <label for="capacity" class="form-label fw-semibold">
+                                Capacity
+                            </label>
+                            <input type="number" 
+                                   name="capacity" 
+                                   id="capacity" 
+                                   class="form-control shadow-sm rounded-3" 
+                                   placeholder="Enter room capacity" 
+                                   required>
                         </div>
+
+                        <!-- Submit Button -->
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-success btn-block">
-                                Submit
+                            <button type="submit" 
+                                    class="btn btn-success btn-lg shadow-sm rounded-pill">
+                                <i class="bi bi-check-circle-fill me-2"></i> Submit
                             </button>
                         </div>
                     </form>
+                </div>
+
+                <!-- Subtle Footer -->
+                <div class="card-footer text-center text-muted small bg-light py-2">
+                    Please ensure details are correct before submitting.
                 </div>
             </div>
         </div>

@@ -1,40 +1,71 @@
 {% extends 'base.html' %}
 {% block title %}Rooms{% endblock title %}
 {% block content %}
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-center">Room Information</h1>
-            <a href="{% url 'hostel:addroom' %}" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Add a new room">
-                <i class="bi bi-plus-circle me-2"></i> Add Room
-            </a>
-        </div>
-        
-        <h4 class="text-center mb-4">Total Rooms: <strong>{{ roomcount }}</strong></h4>
-        <div class="row">
-            {% for room in rooms %}
-                <div class="col-md-4 mb-4">
-                    <div class="card border shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">Room Number: <strong>{{ room.room_number }}</strong></h5>
-                            <p class="card-text">Capacity: <strong>{{ room.capacity }}</strong></p>
-                            <p class="card-text">
-                                Status: 
-                                {% if room.occupied %}
-                                    <span class="badge bg-danger">Full</span>
-                                {% else %}
-                                    <span class="badge bg-success">Vacant</span>
-                                {% endif %}
-                            </p>
-                            <div class="d-flex justify-content-between mt-3">
-                                <a href="{% url 'hostel:allocations' room.room_number %}" class="btn btn-primary">View Allocations</a>
-                                <a href="{% url 'hostel:deleteroom' room.room_number %}" class="btn btn-danger">
-                                    Delete
-                                </a>
-                            </div>
+<div class="container mt-5">
+    <!-- Header with Add Room Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold text-primary">Room Information</h1>
+        <a href="{% url 'hostel:addroom' %}" class="btn btn-success btn-lg rounded-pill shadow-sm" 
+           data-bs-toggle="tooltip" data-bs-placement="top" title="Add a new room">
+            <i class="bi bi-plus-circle me-2"></i> Add Room
+        </a>
+    </div>
+
+    <!-- Room Count -->
+    <h4 class="text-center mb-5">
+        Total Rooms: 
+        <span class="badge bg-primary fs-5 px-3 py-2">{{ roomcount }}</span>
+    </h4>
+
+    <!-- Room Cards -->
+    <div class="row">
+        {% for room in rooms %}
+            <div class="col-md-4 mb-4">
+                <div class="card room-card border-0 shadow-lg h-100 rounded-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark fw-bold mb-3">
+                            Room Number: <span class="text-primary">{{ room.room_number }}</span>
+                        </h5>
+                        <p class="card-text mb-2">Capacity: 
+                            <strong>{{ room.capacity }}</strong>
+                        </p>
+                        <p class="card-text mb-3">
+                            Status: 
+                            {% if room.occupied %}
+                                <span class="badge bg-danger px-3 py-2">Full</span>
+                            {% else %}
+                                <span class="badge bg-success px-3 py-2">Vacant</span>
+                            {% endif %}
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'hostel:allocations' room.room_number %}" class="btn btn-outline-primary btn-sm px-3">View Allocations</a>
+                            <a href="{% url 'hostel:deleteroom' room.room_number %}" class="btn btn-outline-danger btn-sm px-3">Delete</a>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
+</div>
+
+<style>
+    .room-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .room-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    .card-title span {
+        font-size: 1.2rem;
+    }
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: #fff;
+    }
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+</style>
 {% endblock content %}

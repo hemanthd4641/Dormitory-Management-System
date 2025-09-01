@@ -1,16 +1,14 @@
 {% load static %}
 {% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow sticky-top">
   <div class="container-fluid">
-    
-    <a
-      class="navbar-brand d-flex align-items-center fw-bold text-primary"
-      href="{% url 'admission:index' %}"
-    >
-      BCM Hostel
+
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="{% url 'admission:index' %}">
+      <i class="bi bi-house-door-fill me-2"></i> Home
     </a>
 
-   
+    <!-- Toggler -->
     <button
       class="navbar-toggler"
       type="button"
@@ -23,59 +21,67 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-  
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
+
         {% if request.user.is_authenticated %}
           <ul class="nav d-flex flex-row flex-wrap gap-2">
             {% if request.user.is_superuser %}
               <li class="nav-item">
-                <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'admission:viewstudents' %}">View Students</a>
+                <a class="btn btn-light fw-semibold px-4 rounded-pill shadow-sm" href="{% url 'admission:viewstudents' %}">View Students</a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'hostel:index' %}">Room Management</a>
+                <a class="btn btn-light fw-semibold px-4 rounded-pill shadow-sm" href="{% url 'hostel:index' %}">Room Management</a>
               </li>
               <li class="nav-item">
-                <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'admission:announcement' %}">Announcement</a>
+                <a class="btn btn-light fw-semibold px-4 rounded-pill shadow-sm" href="{% url 'admission:announcement' %}">Announcement</a>
               </li>
               <li class="nav-item">
                 <a href="{% url 'admission:registration' %}">
-                  <button type="button" class="btn btn-warning text-dark fw-semibold px-4 shadow" style="border-radius: 30px; letter-spacing: 1.2px;">
+                  <button type="button" class="btn btn-warning text-dark fw-semibold px-4 rounded-pill shadow-sm">
                     + New Admission
                   </button>
                 </a>
               </li>
             {% endif %}
 
-
-             <li class="nav-item">
-                <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'chatroom:report' %}">Complaints</a>
-              </li>
             <li class="nav-item">
-              <a class="btn btn-warning text-dark fw-semibold px-4" href="{% url 'timetable:Foodtimetable' %}">Timetable</a>
+              <a class="btn btn-light fw-semibold px-4 rounded-pill shadow-sm" href="{% url 'chatroom:report' %}">Complaints</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-light fw-semibold px-4 rounded-pill shadow-sm" href="{% url 'timetable:Foodtimetable' %}">Timetable</a>
             </li>
           </ul>
-        {% else %}
-
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'chatroom:index' %}">Chat Room</a>
-          </li>
         {% endif %}
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'userprofile:index' %}">Profile</a>
+        <!-- Chat Room (Styled Button) -->
+        <li class="nav-item ms-2">
+          <a href="{% url 'chatroom:index' %}">
+            <button class="btn btn-info text-white fw-semibold rounded-pill shadow-sm px-4">
+              <i class="bi bi-chat-dots-fill me-1"></i> Chat Room
+            </button>
+          </a>
         </li>
 
+        <!-- Profile -->
+        <li class="nav-item ms-2">
+          <a class="nav-link text-white fw-semibold" href="{% url 'userprofile:index' %}">
+            <i class="bi bi-person-circle me-1"></i> Profile
+          </a>
+        </li>
+
+        <!-- Login / Logout -->
         {% if request.user.is_authenticated %}
           <li class="nav-item ms-2">
             <a href="{% url 'admission:logout' %}">
-              <button class="btn btn-danger">Logout</button>
+              <button class="btn btn-danger rounded-pill shadow-sm px-4">Logout</button>
             </a>
           </li>
         {% else %}
           <li class="nav-item ms-2">
             <a href="{% url 'admission:login' %}">
-              <button class="btn btn-primary">Login</button>
+              <button class="btn btn-light text-primary fw-semibold rounded-pill shadow-sm px-4">Login</button>
             </a>
           </li>
         {% endif %}
